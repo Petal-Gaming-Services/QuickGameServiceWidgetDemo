@@ -1,0 +1,103 @@
+{
+  "app": {
+    "bundleName": "com.xxx.quickgame.servicewidget.hmservice",
+    "version": {
+      "code": 10001100,
+      "name": "1.0.1.100"
+    }
+  },
+  "deviceConfig": {},
+  "module": {
+    "mainAbility": "com.xxx.quickgame.servicewidget.MainAbility",
+    "deviceType": [
+      "phone",
+      "tablet"
+    ],
+    "abilities": [
+      {
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "action.system.home"
+            ]
+          }
+        ],
+        "orientation": "portrait",
+        "visible": true,
+        "name": "com.xxx.quickgame.servicewidget.MainAbility",
+        "icon": "$media:app_icon",
+        "description": "$string:app_name",
+        "formsEnabled": true,
+        "label": "$string:app_name",
+        "type": "page",
+        "forms": [
+          {
+            "jsComponentName": "OpenGameWidget",
+            "isDefault": true,
+            "defaultDimension": "2*2",
+            "name": "OpenGameForm",
+            "description": "$string:app_name",
+            "colorMode": "auto",
+            "type": "JS",
+            "supportDimensions": [
+              "2*2"
+            ],
+            "updateEnabled": false
+          }
+        ],
+        "launchType": "standard",
+        "metaData": {
+          "customizeData": [
+            {
+              "name": "hwc-theme",
+              "value": "androidhwext:style/Theme.Emui.NoTitleBar"
+            }
+          ]
+        }
+      },
+      {
+        "orientation": "portrait",
+        "visible": false,
+        "name": "com.xxx.quickgame.servicewidget.FormRouterAbility",
+        "icon": "$media:app_icon",
+        "description": "$string:app_name",
+        "formsEnabled": false,
+        "label": "$string:app_name",
+        "type": "page",
+        "launchType": "standard",
+        "metaData": {
+          "customizeData": [
+            {
+              "name": "hwc-theme",
+              "value": "androidhwext:style/Theme.Emui.Translucent.NoTitleBar.Fullscreen"
+            }
+          ]
+        }
+      }
+    ],
+    "distro": {
+      "moduleType": "entry",
+      "installationFree": true,
+      "deliveryWithInstall": true,
+      "moduleName": "entry"
+    },
+    "package": "com.xxx.quickgame.servicewidget",
+    "name": "ohos.aafwk.ability.AbilityPackage",
+    "js": [
+      {
+        "pages": [
+          "pages/index/index"
+        ],
+        "name": "OpenGameWidget",
+        "window": {
+          "designWidth": 720,
+          "autoDesignWidth": true
+        },
+        "type": "form"
+      }
+    ]
+  }
+}

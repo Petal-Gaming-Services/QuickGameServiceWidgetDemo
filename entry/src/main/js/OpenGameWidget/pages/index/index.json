@@ -1,0 +1,16 @@
+{
+  "data": {
+    "hostPackageName": ""
+  },
+  "actions": {
+    "openGame": {
+      "action": "router",
+      "bundleName": "com.xxx.quickgame.servicewidget.hmservice",
+      "abilityName": "com.xxx.quickgame.servicewidget.FormRouterAbility",
+      "params": {
+        "formName": "OpenGameForm",
+        "hostPackageName": "{{hostPackageName}}"
+      }
+    }
+  }
+}

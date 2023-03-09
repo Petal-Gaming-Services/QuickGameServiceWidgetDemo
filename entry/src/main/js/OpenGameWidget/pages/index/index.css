@@ -1,0 +1,86 @@
+/*
+ * Copyright 2023. Huawei Technologies Co., Ltd. All rights reserved.
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+.main_container {
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 100%;
+}
+
+.basic_container {
+    flex-direction: column;
+    margin: 12px;
+}
+
+.title_container {
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.app_icon_image {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.app_name {
+    font-size: 14px;
+    font-family: HarmonyHeiTi;
+    color: #E6000000;
+    max-lines: 1;
+    text-overflow: ellipsis;
+    text-align: start;
+    font-weight: 600;
+    margin-start: 6px;
+}
+
+.big_image_container {
+    height: 100%;
+    margin-top: 10px;
+    margin-bottom: 7px;
+}
+
+.big_image {
+    height: 100%;
+    aspect-ratio: 1.778;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.description_text {
+    flex-shrink: 0;
+    font-size: 14px;
+    font-family: HarmonyHeiTi;
+    color: #E6000000;
+    max-lines: 1;
+    text-overflow: ellipsis;
+    text-align: start;
+}
+
+@media (dark-mode: true) {/*深色模式适配*/
+    .main_container {
+        background-color: #2E3033;
+    }
+
+    .app_name {
+        color: #E6FFFFFF;
+    }
+
+    .description_text {
+        color: #E6FFFFFF;
+    }
+}
