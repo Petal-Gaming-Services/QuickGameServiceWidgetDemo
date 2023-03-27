@@ -35,6 +35,7 @@ In order to generate a unique service widget, you may need to modify some of the
 
 | resources or content | describes |
 |:----- |:-------|
+| service_widget_icon.png | Service widget icon. |
 | app_icon.png | Quick game icon. |
 | app_name | Quick game name. |
 | big_image.png | Promotional icon. |
