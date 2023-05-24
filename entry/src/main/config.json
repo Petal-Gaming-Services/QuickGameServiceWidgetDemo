@@ -53,7 +53,7 @@
           "customizeData": [
             {
               "name": "hwc-theme",
-              "value": "androidhwext:style/Theme.Emui.NoTitleBar"
+              "value": "androidhwext:style/Theme.Emui.Translucent.NoTitleBar.Fullscreen"
             }
           ]
         }

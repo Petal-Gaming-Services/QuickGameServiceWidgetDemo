@@ -39,7 +39,6 @@ In order to generate a unique service widget, you may need to modify some of the
 | app_icon.png | Quick game icon. |
 | app_name | Quick game name. |
 | big_image.png | Promotional icon. |
-| game_introduction | The introduction of the quick game, which will be displayed on the homepage of the atomic services. |
 | OpenGameForm-2x2.png | Service widget snapshot, which can be displayed on a negative screen, and the atomic services will be officially downloaded and installed in the background after the user clicks. |
 | bundleName | The package name of the atomic services, used to identify the uniqueness of the application, must end with **.hmservice**. |
 

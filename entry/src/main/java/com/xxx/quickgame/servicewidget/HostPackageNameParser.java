@@ -32,6 +32,18 @@ public class HostPackageNameParser {
      * 传递卡片所在的宿主（服务卡片使用方）应用（如桌面，小艺建议）的包名字段；
      * 如果宿主创建卡片时通过该字段传递了宿主自身包名，则在点击服务卡片打开游戏时，会将该字段作为参数拼接到打开游戏的deeplink中
      */
+    private static final String CALLING_PACKAGE_NAME = "calling_package_name";
+
+    /**
+     * 负一屏提供的卡片入参
+     */
+    private final static String FORM_INTENT_INFO = "formIntentInfo";
+
+    /**
+     * 负一屏提供的使用方包名字段
+     */
+    private final static String HW_CHANNEL_ID = "hwChannelId";
+
     private static final String HOST_PACKAGE_NAME = "hostPackageName";
 
     /**
@@ -59,15 +71,33 @@ public class HostPackageNameParser {
         }
         String hostPackageName = null;
         if (intentParams != null) {
-            Object object = intentParams.getParam(HOST_PACKAGE_NAME);
+            Object object = intentParams.getParam(CALLING_PACKAGE_NAME);
             if (object instanceof String) {
                 hostPackageName = (String) object;
             }
+
+            if (isEmpty(hostPackageName)) {
+                Object info = intentParams.getParam(FORM_INTENT_INFO);
+                if (info instanceof String) {
+                    try {
+                        ZSONObject formIntentInfo = ZSONObject.stringToZSON((String) info);
+                        if (formIntentInfo != null) {
+                            hostPackageName = formIntentInfo.getString(HW_CHANNEL_ID);
+                        }
+                    } catch (Throwable t) {
+                        HiLog.error(TAG, "appendHostPackageNameToZsonObject throwable: " + t.getMessage());
+                    }
+                }
+            }
         }
 
-        if (hostPackageName != null && hostPackageName.length() != 0) {
+        if (isEmpty(hostPackageName)) {
             HiLog.info(TAG, "appendHostPackageNameToZsonObject hostPackageName: " + hostPackageName);
             zsonObject.put(HostPackageNameParser.HOST_PACKAGE_NAME, hostPackageName);
         }
+    }
+
+    private boolean isEmpty(String hostPackageName) {
+        return hostPackageName != null && hostPackageName.length() != 0;
     }
 }

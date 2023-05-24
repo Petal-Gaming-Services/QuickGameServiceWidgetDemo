@@ -19,9 +19,12 @@ package com.xxx.quickgame.servicewidget;
 import ohos.aafwk.ability.Ability;
 import ohos.aafwk.content.Intent;
 import ohos.aafwk.content.Operation;
+import ohos.bundle.IBundleManager;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 import ohos.utils.net.Uri;
+import ohos.utils.zson.ZSONArray;
+import ohos.utils.zson.ZSONObject;
 
 /**
  * 快游戏启动类
@@ -31,9 +34,24 @@ public class QuickGameLauncher {
         "QuickGameLauncher");
 
     /**
-     * 打开快游戏的deepLink，其中“com.xxx.game”需修改为真正的快游戏包名
+     * 快游戏包名，将“com.xxx.game”修改为真正要打开的快游戏包名
      */
-    private static final String OPEN_QUICK_GAME_DEEP_LINK = "hwfastapp://com.xxx.game";
+    private static final String QUICK_GAME_PACKAGE_NAME = "com.xxx.game";
+
+    /**
+     * 快应用中心打开快游戏的deeplink，__QuickGamePackageName__会被替换成快游戏包名
+     */
+    private static final String OPEN_QUICK_GAME_DEEP_LINK_BY_QUICK_CENTER = "hwfastapp://__QuickGamePackageName__";
+
+    /**
+     * 花瓣轻游打开快游戏的deeplink，__QuickGamePackageName__会被替换成快游戏包名
+     */
+    private static final String OPEN_QUICK_GAME_DEEP_LINK_BY_LITEGAMES = "petallitegames://com.petal.litegames?method=openApp&appType=0&packageName=__QuickGamePackageName__";
+
+    /**
+     * 花瓣轻游包名
+     */
+    private static final String LITEGAMES_APP_NAME = "com.petal.litegames";
 
     /**
      * 快应用中心包名
@@ -78,14 +96,33 @@ public class QuickGameLauncher {
             return;
         }
 
-        Uri uri = Uri.parse(OPEN_QUICK_GAME_DEEP_LINK);
-        if (hostPackageName != null && hostPackageName.length() != 0) {
-            uri = uri.makeBuilder().appendDecodedQueryParam(FA_CALLING_PKG, Uri.encode(hostPackageName)).build();
+        Uri uri;
+        String bundleName;
+        if (checkInstall(ability, LITEGAMES_APP_NAME)) {
+            uri = Uri.parse(OPEN_QUICK_GAME_DEEP_LINK_BY_LITEGAMES.replace("__QuickGamePackageName__", QUICK_GAME_PACKAGE_NAME));
+            if (hostPackageName != null && hostPackageName.length() != 0) {
+                ZSONArray paramsForGameZsonArray = new ZSONArray();
+                ZSONObject faCallingPkgZsonObject = new ZSONObject();
+                faCallingPkgZsonObject.put("name", FA_CALLING_PKG);
+                faCallingPkgZsonObject.put("type", "String");
+                faCallingPkgZsonObject.put("value", hostPackageName);
+                paramsForGameZsonArray.add(faCallingPkgZsonObject);
+                ZSONObject params = new ZSONObject();
+                params.put("paramsForGame", paramsForGameZsonArray);
+                uri = uri.makeBuilder().appendDecodedQueryParam("params", params.toString()).build();
+            }
+            bundleName = LITEGAMES_APP_NAME;
+        } else {
+            uri = Uri.parse(OPEN_QUICK_GAME_DEEP_LINK_BY_QUICK_CENTER.replace("__QuickGamePackageName__", QUICK_GAME_PACKAGE_NAME));
+            if (hostPackageName != null && hostPackageName.length() != 0) {
+                uri = uri.makeBuilder().appendDecodedQueryParam(FA_CALLING_PKG, hostPackageName).build();
+            }
+            bundleName = FAST_APP_NAME;
         }
-        HiLog.info(TAG, "openFastGame uri: " + uri.toString());
+        HiLog.info(TAG, "openFastGame uri: " + uri.toString() + ", bundleName: " + bundleName);
         Operation operation = new Intent.OperationBuilder().withUri(uri)
             .withAction(ACTION_JUMP)
-            .withBundleName(FAST_APP_NAME)
+            .withBundleName(bundleName)
             .withFlags(Intent.CLONE_BUNDLE | Intent.FLAG_ABILITY_NEW_MISSION | Intent.FLAG_ABILITY_CLEAR_MISSION)
             .build();
         Intent intent = new Intent();
@@ -111,5 +148,26 @@ public class QuickGameLauncher {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 判断应用是否安装
+     *
+     * @param ability     ability
+     * @param packageName 包名
+     * @return 是否安装
+     */
+    private boolean checkInstall(Ability ability, String packageName) {
+        try {
+            IBundleManager bundleManager = ability.getBundleManager();
+            boolean isApplicationEnabled = bundleManager.isApplicationEnabled(packageName);
+            HiLog.info(TAG, "checkInstall isApplicationEnabled " + isApplicationEnabled);
+            return isApplicationEnabled;
+        } catch (IllegalArgumentException exception) {
+            HiLog.error(TAG, "checkInstall IllegalArgumentException");
+        } catch (Exception e) {
+            HiLog.error(TAG, "checkInstall Exception");
+        }
+        return false;
     }
 }

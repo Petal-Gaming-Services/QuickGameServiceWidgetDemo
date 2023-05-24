@@ -37,7 +37,8 @@ public class MainAbility extends Ability {
     public void onStart(Intent intent) {
         HiLog.info(TAG, "onStart.");
         super.onStart(intent);
-        super.setMainRoute(MainAbilitySlice.class.getName());
+        new QuickGameLauncher().openFastGame(this, null);
+        terminateAbility();
     }
 
     @Override
