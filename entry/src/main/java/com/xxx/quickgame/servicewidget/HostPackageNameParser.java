@@ -91,13 +91,13 @@ public class HostPackageNameParser {
             }
         }
 
-        if (isEmpty(hostPackageName)) {
+        if (!isEmpty(hostPackageName)) {
             HiLog.info(TAG, "appendHostPackageNameToZsonObject hostPackageName: " + hostPackageName);
             zsonObject.put(HostPackageNameParser.HOST_PACKAGE_NAME, hostPackageName);
         }
     }
 
     private boolean isEmpty(String hostPackageName) {
-        return hostPackageName != null && hostPackageName.length() != 0;
+        return hostPackageName == null || hostPackageName.length() == 0;
     }
 }
